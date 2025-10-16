@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     UserService userService;
