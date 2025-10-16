@@ -2,6 +2,7 @@ package com.haidev.identityservice.controller;
 
 import java.time.LocalDate;
 
+import com.haidev.identityservice.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.haidev.identityservice.dto.request.user.UserCreationRequest;
 import com.haidev.identityservice.dto.response.UserResponse;
-import com.haidev.identityservice.service.UserService;
+
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -64,9 +65,6 @@ public class UserControllerTest {
         response = UserResponse.builder()
                 .id("cf345678")
                 .username("john")
-                .firstName("John")
-                .lastName("Doe")
-                .dob(dob)
                 .build();
     }
 
