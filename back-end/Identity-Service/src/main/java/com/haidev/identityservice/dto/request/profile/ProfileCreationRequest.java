@@ -1,4 +1,4 @@
-package com.haidev.profileservice.dto.request;
+package com.haidev.identityservice.dto.request.profile;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,10 +7,10 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@Builder
-@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserProfileCreationRequest {
+@Data
+@Builder
+public class ProfileCreationRequest {
     String userId;
     String firstName;
     String lastName;

@@ -1,4 +1,4 @@
-package com.haidev.profileservice.dto.request;
+package com.haidev.identityservice.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @Builder
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserProfileCreationRequest {
-    String userId;
+public class UserProfileResponse {
+    String id;
     String firstName;
     String lastName;
     LocalDate dob;

@@ -3,6 +3,9 @@ package com.haidev.identityservice.service;
 import java.util.HashSet;
 import java.util.List;
 
+import com.haidev.identityservice.dto.request.profile.ProfileCreationRequest;
+import com.haidev.identityservice.mapper.ProfileMapper;
+import com.haidev.identityservice.repository.httpclient.ProfileClient;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContext;
@@ -36,6 +39,8 @@ public class UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
+    ProfileClient profileClient;
+    ProfileMapper profileMapper;
 
     public UserResponse createUser(UserCreationRequest request) {
 
@@ -49,16 +54,20 @@ public class UserService {
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
         //        user.setRoles(roles);
-        return userMapper.toUserResponse(userRepository.save(user));
+        user = userRepository.save(user);
+        ProfileCreationRequest profileRequest = profileMapper.toProfileCreationRequest(request);
+        profileRequest.setUserId(user.getId());
+        var profileResponse = profileClient.createProfile(profileRequest);
+        log.info("Profile response: {}", profileResponse);
+        return userMapper.toUserResponse(user);
     }
 
-    // @PreAuthorize("hasRole('ADMIN')")
     @PreAuthorize("hasAuthority('APPROVE_POST')")
     public List<UserResponse> getUsers() {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
-    @PostAuthorize("returnObject.username == authentication.name") // trả kết quả rồi mới kiểm tra
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse getUserById(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return userMapper.toUserResponse(user);
