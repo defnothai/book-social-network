@@ -52,16 +52,10 @@ public class UserServiceTest {
         response = UserResponse.builder()
                 .id("cf345678")
                 .username("john")
-                .firstName("John")
-                .lastName("Doe")
-                .dob(dob)
                 .build();
         user = User.builder()
                 .id("cf345678")
                 .username("john")
-                .firstName("John")
-                .lastName("Doe")
-                .dob(dob)
                 .build();
     }
 
