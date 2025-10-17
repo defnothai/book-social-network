@@ -1,5 +1,6 @@
-package com.haidev.identityservice.dto.response;
+package com.haidev.apigateway.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,6 +10,5 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class IntrospectResponse {
-
     boolean isValid;
 }
