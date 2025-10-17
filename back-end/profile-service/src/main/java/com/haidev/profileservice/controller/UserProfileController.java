@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping("/users")
@@ -18,5 +20,10 @@ public class UserProfileController {
     @GetMapping("/{profileId}")
     public UserProfileResponse getUserProfile(@PathVariable String profileId) {
         return userProfileService.getUserProfile(profileId);
+    }
+
+    @GetMapping
+    public List<UserProfileResponse> getAllUserProfiles() {
+        return userProfileService.getAllUserProfiles();
     }
 }
