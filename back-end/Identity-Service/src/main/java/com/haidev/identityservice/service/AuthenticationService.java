@@ -135,7 +135,9 @@ public class AuthenticationService {
 
         // MACVerifier là class của Nimbus để verify Token mà ký bằng HMAC
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
-        // từ token chuyển thành object để dễ xử lý
+        // parse token thành 3 phần
+        // SignedJWT là một đối tượng có cấu trúc, nó gồm 3 phần có thể truy cập thông qua object này
+        // là header, payload, signature
         SignedJWT signedJWT = SignedJWT.parse(token);
 
         Date expirationTime = (isRefresh)
@@ -146,9 +148,7 @@ public class AuthenticationService {
                         .plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS)
                         .toEpochMilli())
                 : signedJWT.getJWTClaimsSet().getExpirationTime();
-        // lấy header + payload trong JWT, chạy qua thuật toán (ví dụ HS256 = HMAC-SHA256) cùng với
-        // secret key.
-        // Sau đó so sánh kết quả hash đó với signature có sẵn trong token.
+
         var verified = signedJWT.verify(verifier);
 
         if (!verified || expirationTime.before(new Date())) {

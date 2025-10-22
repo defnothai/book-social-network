@@ -14,9 +14,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 public class Permission {
-
     @Id
     String name;
-
     String description;
 }
