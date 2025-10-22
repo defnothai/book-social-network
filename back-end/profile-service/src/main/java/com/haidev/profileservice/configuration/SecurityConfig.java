@@ -1,5 +1,7 @@
-package com.haidev.identityservice.configuration;
+package com.haidev.profileservice.configuration;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,25 +17,17 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SecurityConfig {
 
-    @Autowired
     @Lazy
+    @Autowired
     CustomJwtDecoder customJwtDecoder;
 
     static String[] PUBLIC_ENDPOINTS = {
-        "/users/registration",
-        "/auth/introspect",
-        "/auth/token",
-        "/auth/logout",
-        "/auth/refresh"
     };
 
     @Bean
