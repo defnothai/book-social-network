@@ -1,4 +1,4 @@
-package com.haidev.notification_service;
+package com.haidev.notificationservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

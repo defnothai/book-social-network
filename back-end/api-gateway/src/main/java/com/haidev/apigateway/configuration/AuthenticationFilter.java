@@ -41,7 +41,8 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     @NonFinal
     String[] publicEndpoints = {
             "/identity/auth/.*",
-            "/identity/users/registration"
+            "/identity/users/registration",
+            "/notification/email/send"
     };
     @NonFinal
     @Value("${app.api-prefix}")
