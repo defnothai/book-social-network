@@ -2,12 +2,13 @@ package com.haidev.identityservice.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.haidev.identityservice.dto.request.profile.ProfileCreationRequest;
+import com.haidev.identityservice.entity.Role;
 import com.haidev.identityservice.mapper.ProfileMapper;
 import com.haidev.identityservice.repository.httpclient.ProfileClient;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +18,6 @@ import com.haidev.identityservice.dto.request.user.UserCreationRequest;
 import com.haidev.identityservice.dto.request.user.UserUpdateRequest;
 import com.haidev.identityservice.dto.response.UserResponse;
 import com.haidev.identityservice.entity.User;
-import com.haidev.identityservice.enums.Role;
 import com.haidev.identityservice.exception.AppException;
 import com.haidev.identityservice.exception.ErrorCode;
 import com.haidev.identityservice.mapper.UserMapper;
@@ -28,6 +28,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Slf4j
 @Service
@@ -51,18 +53,28 @@ public class UserService {
         }
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.USER.name());
-        //        user.setRoles(roles);
+        Set<Role> roles = new HashSet<>();
+        roles.add(
+                roleRepository.findById(
+                        com.haidev.identityservice.enums.Role.USER.name())
+                        .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED)
+                        )
+        );
+        user.setRoles(roles);
         user = userRepository.save(user);
         ProfileCreationRequest profileRequest = profileMapper.toProfileCreationRequest(request);
         profileRequest.setUserId(user.getId());
+//        ServletRequestAttributes servletRequestAttributes =
+//                (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        var authHeader = servletRequestAttributes.getRequest().getHeader("Authorization");
+//        log.info("Auth header: {}", authHeader);
         var profileResponse = profileClient.createProfile(profileRequest);
         log.info("Profile response: {}", profileResponse);
         return userMapper.toUserResponse(user);
     }
 
-    @PreAuthorize("hasAuthority('APPROVE_POST')")
+//    @PreAuthorize("hasAuthority('APPROVE_POST')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getUsers() {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
