@@ -23,11 +23,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SecurityConfig {
 
-    @Lazy
     @Autowired
+    @Lazy
     CustomJwtDecoder customJwtDecoder;
 
     static String[] PUBLIC_ENDPOINTS = {
+            "/internal/users"
     };
 
     @Bean

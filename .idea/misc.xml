@@ -12,6 +12,7 @@
         <option value="$PROJECT_DIR$/back-end/profile-service/pom.xml" />
         <option value="$PROJECT_DIR$/back-end/Identity-Service/pom.xml" />
         <option value="$PROJECT_DIR$/back-end/api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/back-end/notification-service/pom.xml" />
       </list>
     </option>
   </component>

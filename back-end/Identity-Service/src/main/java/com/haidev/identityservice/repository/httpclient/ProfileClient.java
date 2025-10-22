@@ -7,7 +7,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 // FeignClient đánh dấu báo cho spring biết đây là một rest client interface
 // nó đánh dấu cho spring hiểu rằng tất cả các phương thức bên trong là những lời gọi api đến service khác
