@@ -8,6 +8,7 @@ import com.haidev.identityservice.dto.request.profile.ProfileCreationRequest;
 import com.haidev.identityservice.entity.Role;
 import com.haidev.identityservice.mapper.ProfileMapper;
 import com.haidev.identityservice.repository.httpclient.ProfileClient;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,8 +29,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Slf4j
 @Service
@@ -43,6 +42,7 @@ public class UserService {
     RoleRepository roleRepository;
     ProfileClient profileClient;
     ProfileMapper profileMapper;
+    KafkaTemplate<String, String> kafkaTemplate;  // đối tượng dùng để gửi message đến Kafka
 
     public UserResponse createUser(UserCreationRequest request) {
 
@@ -70,6 +70,10 @@ public class UserService {
 //        log.info("Auth header: {}", authHeader);
         var profileResponse = profileClient.createProfile(profileRequest);
         log.info("Profile response: {}", profileResponse);
+
+        // Publish event to Kafka topic
+        kafkaTemplate.send("onboard-successful", "Welcome " + user.getUsername() + " to our platform!");
+
         return userMapper.toUserResponse(user);
     }
 
