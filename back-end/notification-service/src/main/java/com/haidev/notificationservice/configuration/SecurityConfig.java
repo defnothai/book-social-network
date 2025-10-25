@@ -1,4 +1,4 @@
-package com.haidev.profileservice.configuration;
+package com.haidev.notificationservice.configuration;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -28,7 +28,7 @@ public class SecurityConfig {
     CustomJwtDecoder customJwtDecoder;
 
     static String[] PUBLIC_ENDPOINTS = {
-            "/internal/users"
+            "/email/send"
     };
 
     @Bean
