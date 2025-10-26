@@ -20,7 +20,7 @@ import java.util.List;
 public class EmailService {
     EmailClient emailClient;
 
-    String apiKey = "SG.xxxxxxx.yyyyyyy"; // Thay thế bằng API key thực tế của bạn
+    String apiKey = "SG.xxxxxxx.yyyyyyy"; // Replace with your actual SendGrid API key
 
     public EmailResponse sendEmail(SendEmailRequest request) {
         EmailRequest emailRequest = EmailRequest.builder()

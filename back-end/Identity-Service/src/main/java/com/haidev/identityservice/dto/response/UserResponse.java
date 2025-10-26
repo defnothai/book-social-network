@@ -1,6 +1,5 @@
 package com.haidev.identityservice.dto.response;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import lombok.AccessLevel;
@@ -14,5 +13,6 @@ import lombok.experimental.FieldDefaults;
 public class UserResponse {
     String id;
     String username;
+    String email;
     Set<RoleResponse> roles;
 }
