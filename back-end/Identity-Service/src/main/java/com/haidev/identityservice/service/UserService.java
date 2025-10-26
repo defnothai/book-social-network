@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.haidev.event.dto.NotificationEvent;
 import com.haidev.identityservice.dto.request.profile.ProfileCreationRequest;
 import com.haidev.identityservice.entity.Role;
 import com.haidev.identityservice.mapper.ProfileMapper;
@@ -42,7 +43,7 @@ public class UserService {
     RoleRepository roleRepository;
     ProfileClient profileClient;
     ProfileMapper profileMapper;
-    KafkaTemplate<String, String> kafkaTemplate;  // đối tượng dùng để gửi message đến Kafka
+    KafkaTemplate<String, Object> kafkaTemplate;  // đối tượng dùng để gửi message đến Kafka
 
     public UserResponse createUser(UserCreationRequest request) {
 
@@ -71,8 +72,16 @@ public class UserService {
         var profileResponse = profileClient.createProfile(profileRequest);
         log.info("Profile response: {}", profileResponse);
 
+        // build notification event
+        NotificationEvent notificationEvent = NotificationEvent.builder()
+                .channel("EMAIL")
+                .recipient(request.getEmail())
+                .subject("Welcome to Our Platform")
+                .body("Dear " + user.getUsername() + ", welcome to our platform!")
+                .build();
+
         // Publish event to Kafka topic
-        kafkaTemplate.send("onboard-successful", "Welcome " + user.getUsername() + " to our platform!");
+        kafkaTemplate.send("notification-delivery", notificationEvent);
 
         return userMapper.toUserResponse(user);
     }

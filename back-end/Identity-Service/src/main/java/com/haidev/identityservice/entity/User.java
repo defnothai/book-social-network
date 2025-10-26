@@ -20,6 +20,8 @@ public class User {
     String id;
     String username;
     String password;
+    String email;
+    boolean emailVerified;
     @ManyToMany
     Set<Role> roles;
 }
